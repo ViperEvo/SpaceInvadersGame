@@ -18,6 +18,12 @@ namespace MyGame
         int playerSpeed = 10;
         int wave = 1;
         int yBullet1 = 0;
+        int yBullet2 = 95;
+        int yBullet3x = 158;
+        int yBullet3y = 32;
+        int xBulletBoss = 126;
+        int bosx;
+        int bosy;
         public Form1()
         {
             InitializeComponent();
@@ -86,11 +92,14 @@ namespace MyGame
             {
                 goLeft = false;
                 Player.Image = Properties.Resources.Player;
+
+
             }
             if (e.KeyCode == Keys.D)
             {
                 goRight = false;
                 Player.Image = Properties.Resources.Player;
+
             }
             if (e.KeyCode == Keys.W)
                 goUp = false;
@@ -135,10 +144,115 @@ namespace MyGame
                                     case "60":
                                         enemyAlive = false;
                                         break;
-                                    
+                                    case "190":
+                                        enemyAlive1 = false;
+                                        break;
+                                    case "125":
+                                        enemyAlive2 = false;
+                                        break;
+                                    case "760":
+                                        enemyAlive3 = false;
+                                        break;
+                                    case "630":
+                                        enemyAlive4 = false;
+                                        break;
+                                    case "695":
+                                        enemyAlive5 = false;
+                                        break;
+                                    case "350":
+                                        enemyAlive6 = false;
+                                        break;
+                                    case "470":
+                                        enemyAlive7 = false;
+                                        break;
+                                    case "300":
+                                        enemyAlive8 = false;
+                                        break;
+                                    case "520":
+                                        enemyAlive9 = false;
+                                        break;
+                                    case "10":
+                                        enemyAlive10 = false;
+                                        break;
+                                    case "800":
+                                        enemyAlive11 = false;
+                                        break;
+                                    case "410":
+                                        enemyAlive12 = false;
+                                        break;
+                                    case "433":
+                                        enemy1Alive = false;
+                                        break;
+                                    case "573":
+                                        enemy1Alive1 = false;
+                                        break;
+                                    case "293":
+                                        enemy1Alive2 = false;
+                                        break;
+                                    case "223":
+                                        enemy1Alive4 = false;
+                                        break;
+                                    case "793":
+                                        enemy1Alive5 = false;
+                                        break;
+                                    case "73":
+                                        enemy1Alive6 = false;
+                                        break;
+                                    case "490":
+                                        enemy1Alive7 = false;
+                                        break;
+                                    case "351":
+                                        enemy1Alive8 = false;
+                                        break;
+                                    case "140":
+                                        enemy1Alive9 = false;
+                                        break;
+                                    case "700":
+                                        enemy1Alive10 = false;
+                                        break;
                                 }
                             }
-            
+            // Sprawdzenie kolizji pocisku gracza ze statkiem przeciwnika
+            foreach (Control i in this.Controls)
+                foreach (Control j in this.Controls)
+                    if (i is PictureBox && i.Tag == "enemy5" || i.Tag == "enemy-5" || i.Tag == "boss")
+                        if (j is PictureBox && j.Tag == "bullet")
+                            if (i.Bounds.IntersectsWith(j.Bounds))
+                            {
+                                this.Controls.Remove(j);
+                                // Usuwanie po jednym punkcie życia przy trafieniu przeciwnika przez gracza
+                                switch(i.Name)
+                                {
+                                    case "52": enemy5Alive -= 1;
+                                        break;
+                                    case "192":
+                                        enemy5Alive1 -= 1;
+                                        break;
+                                    case "122":
+                                        enemy5Alive2 -= 1;
+                                        break;
+                                    case "262":
+                                        enemy5Alive3 -= 1;
+                                        break;
+                                    case "353":                                                                      
+                                        bossAlive -= 1;
+                                        break;
+                                }
+                                // Sprawdzenie który przeciwnik został trafiony
+                                if (enemy5Alive == 0 && i.Name == "52")
+                                    this.Controls.Remove(i);
+                                if (enemy5Alive1 == 0 && i.Name == "192")
+                                    this.Controls.Remove(i);
+                                if (enemy5Alive2 == 0 && i.Name == "122")
+                                    this.Controls.Remove(i);
+                                if (enemy5Alive3 == 0 && i.Name == "262")
+                                    this.Controls.Remove(i);
+                                if (bossAlive == 0 && i.Name == "353")
+                                {
+                                    this.Controls.Remove(i);
+                                    Win();
+                                }
+                            }
              // Trafienie pocisku przeciwnika w statek gracza                 
              foreach (Control i in this.Controls)
                 foreach (Control j in this.Controls)
@@ -179,7 +293,45 @@ namespace MyGame
                         this.Controls.Remove(x);
                 }
             }
-            
+            // Ruch przeciwnika
+            foreach (Control x in this.Controls)
+            {
+                if (x is PictureBox && x.Tag == "enemy5")
+                {
+                    ((PictureBox)x).Left += 5;
+                    ((PictureBox)x).Top += 1;
+                    if (((PictureBox)x).Left > 1200)
+                        this.Controls.Remove(x);
+                }
+            }
+            // Ruch przeciwnika
+            foreach (Control x in this.Controls)
+            {
+                if (x is PictureBox && x.Tag == "enemy-5")
+                {
+                    ((PictureBox)x).Left -= 5;
+                    ((PictureBox)x).Top += 1;
+                    if (((PictureBox)x).Left < 0)
+                        this.Controls.Remove(x);
+                }
+            }
+            // Ruch Bossa
+            foreach (Control x in this.Controls)                                
+            {
+                if (x is PictureBox && x.Tag == "boss")
+                {
+                    if (((PictureBox)x).Top < 15)
+                        ((PictureBox)x).Top += 1;
+                    if (((PictureBox)x).Left == 2)
+                        ((PictureBox)x).Top += 1;
+                    if (((PictureBox)x).Left == 418)
+                        ((PictureBox)x).Top -= 1;
+                    if (((PictureBox)x).Top == 15)
+                        ((PictureBox)x).Left -= 2;                    
+                    if (((PictureBox)x).Top == 16)
+                        ((PictureBox)x).Left += 2;                   
+                }
+            }
             // Granice ruchu statku gracza
             if (Player.Location.X < 0)
                 goLeft = false;
@@ -196,7 +348,32 @@ namespace MyGame
             if (yBullet1 < 600)
                 yBullet1 += 95;
         }
-        
+        // Reset pozycji pocisku przeciwnika
+        public void BulletMoveWave2(object sender, EventArgs e)
+        {
+            if (yBullet2 < 600)
+                yBullet2 += 95;
+        }
+        // Reset pozycji pocisku przeciwnika
+        public void BulletMoveWave3(object sender, EventArgs e)
+        {
+            if (yBullet3x < 1300)
+                yBullet3x += 158;
+            if (yBullet3y < 600)
+                yBullet3y += 32;
+        }
+        // Reset pozycji pocisku Bossa
+        public void BulletMoveWaveBoss(object sender, EventArgs e)                                        
+        {
+            foreach (Control x in this.Controls)
+            {
+               if (x is PictureBox && x.Tag == "boss")
+                {
+                        bosx = ((PictureBox)x).Location.X;
+                        bosy = ((PictureBox)x).Location.Y;                    
+                }
+            }
+        }
         // Przeciwnicy w pierwszej fali
         private void Wave1_Timer(object sender, EventArgs e)
         {
@@ -216,12 +393,58 @@ namespace MyGame
                 enemy(800, -100);
                 enemy(410, -100);
             }
-            // wave = 2;
+            wave = 2;
             wave1timer.Stop();
-            // wave2timer.Enabled = true;
+            wave2timer.Enabled = true;
             enemyBulletTimer.Tick += new EventHandler(BulletMoveWave1);
         }
-        
+        // Przeciwnicy w drugiej fali
+        private void Wave2_Timer(object sender, EventArgs e)
+        {
+            if (wave == 2)
+            {
+                enemy3(430, -100);
+                enemy3(570, -100);
+                enemy3(290, -100);
+                enemy3(220, -120);
+                enemy3(790, -100);
+                enemy3(70, -100);
+                enemy(490, -100);
+                enemy(351, -100);
+                enemy(140, -70);
+                enemy(700, -70);
+            }
+            wave = 3;
+            wave2timer.Stop();
+            wave3timer.Enabled = true;
+            enemyBulletTimer.Tick += new EventHandler(BulletMoveWave2);
+        }
+        // Przeciwnicy w trzeciej fali
+        private void Wave3_Timer(object sender, EventArgs e)
+        {
+            if (wave == 3)
+            {
+                enemy5(-100, 50);
+                enemy5(-100, 190);
+                enemy5minus(1000, 120);
+                enemy5minus(1000, 260);
+            }
+            wave = 4;
+            wave3timer.Stop();
+            waveBoss.Enabled = true;
+            enemyBulletTimer.Tick += new EventHandler(BulletMoveWave3);
+        }
+        // Boss w ostatniej fali
+        private void waveBoss_Tick(object sender, EventArgs e)                        
+        {
+            if(wave == 4)
+            {
+                boss(350, -300);
+            }
+            wave = 5;
+            waveBoss.Stop();
+            enemyBulletTimer.Tick += new EventHandler(BulletMoveWaveBoss);
+        }
         // Pozycje z których wylatuje pocisk przeciwnika
         private void enemy_bullet_timer(object sender, EventArgs e)
         {
@@ -252,7 +475,69 @@ namespace MyGame
                 bulletEnemyGreenBig(800, -90 + yBullet1);
             if (wave == 2 && enemyAlive12)
                 bulletEnemyGreenBig(410, -90 + yBullet1);
-            
+            // Wave 2
+            if (wave == 3 && enemy1Alive)
+                bulletEnemyGreenTall(430, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive1)
+                bulletEnemyGreenTall(570, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive2)
+                bulletEnemyGreenTall(290, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive4)
+                bulletEnemyGreenTall(220, -150 + yBullet2);
+            if (wave == 3 && enemy1Alive5)
+                bulletEnemyGreenTall(790, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive6)
+                bulletEnemyGreenTall(70, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive7)
+                bulletEnemyGreenBig(490, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive8)
+                bulletEnemyGreenBig(351, -130 + yBullet2);
+            if (wave == 3 && enemy1Alive9)
+                bulletEnemyGreenBig(140, -100 + yBullet2);
+            if (wave == 3 && enemy1Alive10)
+                bulletEnemyGreenBig(700, -100 + yBullet2);
+            // Wave 3
+            if (wave == 4 && enemy5Alive > 0)
+                bulletEnemyLazer2(-100+25+yBullet3x, 30+yBullet3y);
+            if (wave == 4 && enemy5Alive > 0)
+                bulletEnemyLazer2(-100+50+yBullet3x, 30+yBullet3y);
+            if (wave == 4 && enemy5Alive > 0)
+                bulletEnemyLazer2(-100+yBullet3x, 30+yBullet3y);
+            if (wave == 4 && enemy5Alive1 > 0)
+                bulletEnemyLazer2(-100+yBullet3x, 170+yBullet3y);
+            if (wave == 4 && enemy5Alive1 > 0)
+                bulletEnemyLazer2(-100+25+yBullet3x, 170+yBullet3y);
+            if (wave == 4 && enemy5Alive1 > 0)
+                bulletEnemyLazer2(-100+50+yBullet3x, 170+yBullet3y);
+            if (wave == 4 && enemy5Alive2 > 0)
+                bulletEnemyLazer2(1000 - yBullet3x, 100 + yBullet3y);
+            if (wave == 4 && enemy5Alive2 > 0)
+                bulletEnemyLazer2(1000 + 25 - yBullet3x, 100 + yBullet3y);
+            if (wave == 4 && enemy5Alive2 > 0)
+                bulletEnemyLazer2(1000 + 50 - yBullet3x, 100 + yBullet3y);
+            if (wave == 4 && enemy5Alive3 > 0)
+                bulletEnemyLazer2(1000 - yBullet3x, 240 + yBullet3y);
+            if (wave == 4 && enemy5Alive3 > 0)
+                bulletEnemyLazer2(1000 + 25 - yBullet3x, 240 + yBullet3y);
+            if (wave == 4 && enemy5Alive3 > 0)
+                bulletEnemyLazer2(1000 + 50 - yBullet3x, 240 + yBullet3y);
+            // Pociski Bossa
+            if (wave == 5 && bossAlive > 0)                                                        
+            {
+                if (bosy == 0)
+                {
+
+                }
+                else
+                {
+                    bulletEnemyGreenBig(bosx + 205, bosy + 270);
+                    bulletEnemyGreenBig(bosx + 215, bosy + 270);
+                    bulletEnemyGreenTall(bosx + 45, bosy + 170);
+                    bulletEnemyGreenTall(bosx + 435, bosy + 170);
+                    bulletEnemyLazer2(bosx + 5, bosy + 170);
+                    bulletEnemyLazer2(bosx + 475, bosy + 170);
+                }
+            }
         }
         // Zdefiniowanie hitboxa pocisku gracza
         private void makeBullet(int n)
@@ -281,7 +566,32 @@ namespace MyGame
             this.Controls.Add(bulletEnGrBig);
             bulletEnGrBig.BringToFront();
         }
-        
+        // Zdefiniowanie hitboxa pocisku przeciwnika
+        private void bulletEnemyGreenTall(int x, int y)
+        {
+            PictureBox bulletEnGrTall = new PictureBox();
+            bulletEnGrTall.Image = Properties.Resources.lazer1;
+            bulletEnGrTall.Size = new Size(26, 50);
+            bulletEnGrTall.SizeMode = PictureBoxSizeMode.StretchImage;
+            bulletEnGrTall.Tag = "bulletEnemy";
+            bulletEnGrTall.Location = new Point(x + 13, y + 100);
+            bulletEnGrTall.BackColor = Color.Transparent;
+            this.Controls.Add(bulletEnGrTall);
+            bulletEnGrTall.BringToFront();
+        }
+        // Zdefiniowanie hitboxa pocisku przeciwnika
+        private void bulletEnemyLazer2(int x, int y)
+        {
+            PictureBox bulletEnL2 = new PictureBox();
+            bulletEnL2.Image = Properties.Resources.lazer2;
+            bulletEnL2.Size = new Size(10, 55);
+            bulletEnL2.SizeMode = PictureBoxSizeMode.StretchImage;
+            bulletEnL2.Tag = "bulletEnemy";
+            bulletEnL2.Location = new Point(x, y+71);
+            bulletEnL2.BackColor = Color.Transparent;
+            this.Controls.Add(bulletEnL2);
+            bulletEnL2.BringToFront();
+        }
         // Zdefiniowanie hitboxa statku przeciwnika
         public void enemy(int x, int y)
         {
@@ -296,7 +606,62 @@ namespace MyGame
             enemy.BackColor = Color.Transparent;
             enemy.Name = Convert.ToString(x);
         }
-        
+        // Zdefiniowanie hitboxa statku przeciwnika
+        public void enemy3(int x, int y)
+        {
+            PictureBox enemy3 = new PictureBox();
+            enemy3.Image = Properties.Resources.enemy3;
+            enemy3.Size = new Size(50, 100);
+            enemy3.SizeMode = PictureBoxSizeMode.Zoom;
+            enemy3.Tag = "enemy";
+            enemy3.Location = new Point(x, y);
+            this.Controls.Add(enemy3);
+            enemy3.BringToFront();
+            enemy3.BackColor = Color.Transparent;
+            enemy3.Name = Convert.ToString(x + 3);
+        }
+        // Zdefiniowanie hitboxa statku przeciwnika
+        public void enemy5(int x, int y)
+        {
+            PictureBox enemy5 = new PictureBox();
+            enemy5.Image = Properties.Resources.enemy5;
+            enemy5.Size = new Size(100, 70);
+            enemy5.SizeMode = PictureBoxSizeMode.Zoom; 
+            enemy5.Tag = "enemy5";
+            enemy5.Location = new Point(x, y);
+            enemy5.BackColor = Color.Transparent;
+            this.Controls.Add(enemy5);
+            enemy5.BringToFront();
+            enemy5.Name = Convert.ToString(y + 2);
+        }
+        // Zdefiniowanie hitboxa statku przeciwnika
+        public void enemy5minus(int x, int y)
+        {
+            PictureBox enemy5min = new PictureBox();
+            enemy5min.Image = Properties.Resources.enemy5;
+            enemy5min.Size = new Size(100, 70);
+            enemy5min.SizeMode = PictureBoxSizeMode.Zoom;
+            enemy5min.Tag = "enemy-5";
+            enemy5min.Location = new Point(x, y);
+            enemy5min.BackColor = Color.Transparent;
+            this.Controls.Add(enemy5min);
+            enemy5min.BringToFront();
+            enemy5min.Name = Convert.ToString(y + 2);
+        }
+        // Zdefiniowanie hitboxa statku Bossa
+        public void boss(int x, int y)                                       
+        {
+            PictureBox boss = new PictureBox();
+            boss.Image = Properties.Resources.Boss;
+            boss.Size = new Size(490, 306);
+            boss.SizeMode = PictureBoxSizeMode.CenterImage;
+            boss.Tag = "boss";
+            boss.Location = new Point(x, y);          
+            boss.BackColor = Color.Transparent;
+            this.Controls.Add(boss);
+            boss.BringToFront();
+            boss.Name = Convert.ToString(x + 3);
+        }
 
         // Ilość puntków życia przecinwików
         public bool enemyAlive = true;
@@ -313,6 +678,25 @@ namespace MyGame
         public bool enemyAlive11 = true;
         public bool enemyAlive12 = true;
 
+        public bool enemy1Alive = true;
+        public bool enemy1Alive1 = true;
+        public bool enemy1Alive2 = true;
+        public bool enemy1Alive3 = true;
+        public bool enemy1Alive4 = true;
+        public bool enemy1Alive5 = true;
+        public bool enemy1Alive6 = true;
+        public bool enemy1Alive7 = true;
+        public bool enemy1Alive8 = true;
+        public bool enemy1Alive9 = true;
+        public bool enemy1Alive10 = true;
+
+        public int enemy5Alive =  2;
+        public int enemy5Alive1 = 2;
+        public int enemy5Alive2 = 2;
+        public int enemy5Alive3 = 2;
+        // Ilość punktów życia Bossa
+        public int bossAlive = 10;                                            
+
         private void label2_Click(object sender, EventArgs e)
         {
             
@@ -323,6 +707,8 @@ namespace MyGame
             timer1.Stop();
             wave1timer.Stop();
             enemyBulletTimer.Stop();
+            wave2timer.Stop();
+            wave3timer.Stop();
             label2.Visible = true;
             label2.BringToFront();
             label2.Left = 375;
@@ -334,7 +720,9 @@ namespace MyGame
             timer1.Stop();
             wave1timer.Stop();
             enemyBulletTimer.Stop();
-            
+            wave2timer.Stop();
+            wave3timer.Stop();
+            waveBoss.Stop();
             label2.Visible = true;
             label2.BringToFront();
             label2.Left = 375;

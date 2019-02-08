@@ -62,11 +62,21 @@
             this.wave1timer.Interval = 5000;
             this.wave1timer.Tick += new System.EventHandler(this.Wave1_Timer);
             // 
+            // wave2timer
+            // 
+            this.wave2timer.Interval = 6000;
+            this.wave2timer.Tick += new System.EventHandler(this.Wave2_Timer);
+            // 
             // enemyBulletTimer
             // 
             this.enemyBulletTimer.Enabled = true;
             this.enemyBulletTimer.Interval = 1000;
             this.enemyBulletTimer.Tick += new System.EventHandler(this.enemy_bullet_timer);
+            // 
+            // wave3timer
+            // 
+            this.wave3timer.Interval = 7000;
+            this.wave3timer.Tick += new System.EventHandler(this.Wave3_Timer);
             // 
             // label2
             // 
@@ -95,6 +105,11 @@
             this.Player.TabIndex = 0;
             this.Player.TabStop = false;
             this.Player.Tag = "main";
+            // 
+            // waveBoss
+            // 
+            this.waveBoss.Interval = 9000;
+            this.waveBoss.Tick += new System.EventHandler(this.waveBoss_Tick);
             // 
             // Form1
             // 
